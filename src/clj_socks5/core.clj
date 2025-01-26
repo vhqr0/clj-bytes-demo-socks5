@@ -27,6 +27,7 @@
 
 (defn tcp-connect
   [[host port]]
+  (println "connect to" host port)
   (deferred->ch
    (tcp/client {:host host :port port})
    stream->ch-pair))

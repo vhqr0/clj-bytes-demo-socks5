@@ -35,13 +35,13 @@
 
 (defn handshake
   [[ich och]]
-  (let [state (sst/->state)]
+  (let [state (->state)]
     (a/go-loop [state state]
       (if (= (:stage state) :connected)
         state
         (when-let [b (a/<! ich)]
-          (let [state (sst/update-buffer state b)
-                [to-send state] (sst/advance state)]
+          (let [state (update-buffer state b)
+                [to-send state] (advance state)]
             (when (or (nil? to-send) (b/empty? to-send) (a/>! och to-send))
               (recur state))))))))
 

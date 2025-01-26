@@ -1,7 +1,7 @@
 (ns clj-socks5.core
   (:require [clojure.core.async :as a]
             [manifold.deferred :as d]
-            [manifold.stream :as stream]
+            [manifold.stream :as s]
             [aleph.tcp :as tcp]
             [clj-bytes.core :as b]
             [clj-socks5.conn :as conn]))
@@ -21,8 +21,8 @@
   [stream]
   (let [ich (a/chan 1024)
         och (a/chan 1024)]
-    (stream/connect stream ich)
-    (stream/connect och stream)
+    (s/connect stream ich)
+    (s/connect och stream)
     [ich och]))
 
 (defn tcp-connect

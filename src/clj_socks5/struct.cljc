@@ -19,30 +19,31 @@
   ;; => "hello"
   )
 
-(def ver->int
-  {:socks5 5})
+(def ver-map
+  (st/->kimap {:socks5 5}))
 
 (def socks5-ver
-  (st/enum st/uint8 ver->int))
+  (st/enum st/uint8 ver-map))
 
-(def cmd->int
-  {:connect 1 :bind 2 :udp-assoc 3})
+(def cmd-map
+  (st/->kimap {:connect 1 :bind 2 :udp-assoc 3}))
 
 (def socks5-cmd
-  (st/enum st/uint8 cmd->int))
+  (st/enum st/uint8 cmd-map))
 
-(def res->int
-  {:ok 0 :error 1 :no-perm 2 :net-unreach 3 :host-unreach 4
-   :conn-refused 5 :ttl-expired 6 :cmd-no-support 7 :atype-no-support 8})
+(def res-map
+  (st/->kimap
+   {:ok 0 :error 1 :no-perm 2 :net-unreach 3 :host-unreach 4
+    :conn-refused 5 :ttl-expired 6 :cmd-no-support 7 :atype-no-support 8}))
 
 (def socks5-res
-  (st/enum st/uint8 res->int))
+  (st/enum st/uint8 res-map))
 
-(def atype->int
-  {:domain 3 :ipv4 1 :ipv6 4})
+(def atype-map
+  (st/->kimap {:domain 3 :ipv4 1 :ipv6 4}))
 
 (def socks5-atype
-  (st/enum st/uint8 atype->int))
+  (st/enum st/uint8 atype-map))
 
 (def socks5-domain-host socks5-str)
 
@@ -59,11 +60,11 @@
        (fn [[host port]] {:atype :domain :host host :port port})
        (juxt :host :port))))
 
-(def meth->int
-  {:no-auth 0 :gssapi 1 :password 2 :no-accepct 0xff})
+(def meth-map
+  (st/->kimap {:no-auth 0 :gssapi 1 :password 2 :no-accepct 0xff}))
 
 (def socks5-meth
-  (st/enum st/uint8 meth->int))
+  (st/enum st/uint8 meth-map))
 
 (def socks5-meths
   (-> (st/bytes-var st/uint8)

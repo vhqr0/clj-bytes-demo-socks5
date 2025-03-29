@@ -48,14 +48,15 @@
 (def socks5-domain-host socks5-str)
 
 (def socks5-addr
-  (-> (st/key-fns
-       :atype (constantly socks5-atype)
-       :host (fn [{:keys [atype]}]
-               (case atype
-                 :domain socks5-domain-host
-                 ;; TODO: add ipv4/ipv6 host support
-                 ))
-       :port (constantly st/uint16-be))
+  (-> (st/keys
+       :atype socks5-atype
+       :host (st/lazy
+              (fn [{:keys [atype]}]
+                (case atype
+                  :domain socks5-domain-host
+                  ;; TODO: add ipv4/ipv6 host support
+                  )))
+       :port st/uint16-be)
       (st/wrap
        (fn [[host port]] {:atype :domain :host host :port port})
        (juxt :host :port))))
